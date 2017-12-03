@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4523374694831810}
   - component: {fileID: 111230810048553052}
+  - component: {fileID: 114064647871867664}
   - component: {fileID: 50617097790870492}
   - component: {fileID: 61426540006540048}
   - component: {fileID: 61753283660212376}
-  - component: {fileID: 114079993112947356}
   - component: {fileID: 82881836098232482}
   - component: {fileID: 82707245001373854}
   m_Layer: 11
@@ -438,7 +438,7 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &114079993112947356
+--- !u!114 &114064647871867664
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -446,18 +446,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1056207361639480}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e494cc33a15aa4f5ca17bfc53a04bd3d, type: 3}
+  m_Script: {fileID: 11500000, guid: f7acd5ee3b571401fad00fb447f647c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ANIMATION: {fileID: 111230810048553052}
-  holdDistance: 0.4
-  RotatePoint: {fileID: 1384624123573672}
-  SpawnPoint: {fileID: 1283258128188426}
-  ReloadAudio: {fileID: 82707245001373854}
-  FireAudio: {fileID: 82881836098232482}
-  oneHanded: 1
-  Handle1: {fileID: 1530258000536544}
-  Handle2: {fileID: 0}
+  reloadAudio: {fileID: 0}
+  fireAudio: {fileID: 0}
   Projectile: {fileID: 0}
 --- !u!212 &212112127155599300
 SpriteRenderer:

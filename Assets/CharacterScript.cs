@@ -4,84 +4,92 @@ using UnityEngine;
 
 public class CharacterScript : MonoBehaviour {
 
-	public PhysicalMovement PMovementScript;
+	PhysicalMovement physicalMovementScript;
+	ItemHandler itemHandlerScript;
 
-	public GameObject Torso;
-	GameObject Hip;
-	GameObject Head;
-	GameObject Neck;
+	GameObject selectedObject;
+	GameObject equippedObject;
 
-	GameObject ArmUpperF;
-	GameObject ArmLowerF;
-	GameObject HandF;
-	GameObject ArmUpperB;
-	GameObject ArmLowerB;
-	GameObject HandB;
+	GameObject torso;
+	GameObject hip;
+	GameObject head;
+	GameObject neck;
 
-	GameObject LegUpperF;
-	GameObject LegLowerF;
-	GameObject FootF;
-	GameObject LegUpperB;
-	GameObject LegLowerB;
-	GameObject FootB;
+	GameObject armUpperF;
+	GameObject armLowerF;
+	GameObject handF;
+	GameObject armUpperB;
+	GameObject armLowerB;
+	GameObject handB;
+	GameObject legUpperF;
+	GameObject legLowerF;
+	GameObject footF;
+	GameObject legUpperB;
+	GameObject legLowerB;
+	GameObject footB;
 
-	GameObject[] BodyArr;
+	GameObject[] bodyArr;
 
-	Animator TorsoAnimator;
-	Animator NeckAnimator;
-	Animator ArmFAnimator;
-	Animator ArmBAnimator;
-	Animator HipAnimator;
+	Animator torsoAnimator;
+	Animator neckAnimator;
+	Animator armFAnimator;
+	Animator armBAnimator;
+	Animator hipAnimator;
 
+	Vector2 mousePos;
 	public BoxCollider2D coll1;
 	public BoxCollider2D coll2;
-
 
 	public Camera cam;
 	public bool facingRight = true;	
 
 	public GameObject[] getBodyArr(){
-		return BodyArr;
+		return bodyArr;
 	}
 	// Use this for initialization
 	void Start () {
-		
+		physicalMovementScript = GetComponent<PhysicalMovement>();
+		itemHandlerScript = GetComponent<ItemHandler>();
+
 		GetBody ();
 
-		TorsoAnimator = Torso.GetComponent<Animator> ();
-		NeckAnimator = Neck.GetComponent<Animator> ();
-		ArmFAnimator = ArmUpperF.GetComponent<Animator> ();
-		ArmBAnimator = ArmUpperB.GetComponent<Animator> ();
-		HipAnimator = Hip.GetComponent<Animator> ();
+		torsoAnimator = torso.GetComponent<Animator> ();
+		neckAnimator = neck.GetComponent<Animator> ();
+		armFAnimator = armUpperF.GetComponent<Animator> ();
+		armBAnimator = armUpperB.GetComponent<Animator> ();
+		hipAnimator = hip.GetComponent<Animator> ();
 	}
 
 	void GetBody (){
-		
-		Neck = Torso.transform.Find("Neck").gameObject;
-		Head = Neck.transform.Find("Head").gameObject;
-		Hip = Torso.transform.Find("Hip").gameObject;
+		torso = transform.Find("Torso").gameObject;
+		neck = torso.transform.Find("Neck").gameObject;
+		head = neck.transform.Find("Head").gameObject;
+		hip = torso.transform.Find("Hip").gameObject;
 
-		ArmUpperF = Torso.transform.Find("ArmUpperF").gameObject;
-		ArmLowerF = ArmUpperF.transform.Find("ArmLowerF").gameObject;
-		HandF = ArmLowerF.transform.Find("HandF").gameObject;
-		ArmUpperB = Torso.transform.Find("ArmUpperB").gameObject;
-		ArmLowerB = ArmUpperB.transform.Find("ArmLowerB").gameObject;
-		HandB = ArmLowerB.transform.Find("HandB").gameObject;
+		armUpperF = torso.transform.Find("ArmUpperF").gameObject;
+		armLowerF = armUpperF.transform.Find("ArmLowerF").gameObject;
+		handF = armLowerF.transform.Find("HandF").gameObject;
+		armUpperB = torso.transform.Find("ArmUpperB").gameObject;
+		armLowerB = armUpperB.transform.Find("ArmLowerB").gameObject;
+		handB = armLowerB.transform.Find("HandB").gameObject;
+	
+		legUpperF = hip.transform.Find("LegUpperF").gameObject;
+		legLowerF = legUpperF.transform.Find("LegLowerF").gameObject;
+		footF = legLowerF.transform.Find ("FootF").gameObject;
+		legUpperB = hip.transform.Find("LegUpperB").gameObject;
+		legLowerB = legUpperB.transform.Find("LegLowerB").gameObject;
+		footB = legLowerB.transform.Find("FootB").gameObject;
 
-		LegUpperF = Hip.transform.Find("LegUpperF").gameObject;
-		LegLowerF = LegUpperF.transform.Find("LegLowerF").gameObject;
-		FootF = LegLowerF.transform.Find ("FootF").gameObject;
-		LegUpperB = Hip.transform.Find("LegUpperB").gameObject;
-		LegLowerB = LegUpperB.transform.Find("LegLowerB").gameObject;
-		FootB = LegLowerB.transform.Find("FootB").gameObject;
-
-		BodyArr = new GameObject[]{
-			Torso, Head, Neck, Hip, ArmUpperF, ArmLowerF, HandF, ArmUpperB, ArmLowerB, HandB, LegUpperF, LegLowerF, FootF, LegUpperB, LegLowerB, FootB
+		bodyArr = new GameObject[]{
+			torso, head, neck, hip, armUpperF, armLowerF, handF, armUpperB, armLowerB, handB, legUpperF, legLowerF, footF, legUpperB, legLowerB, footB
 		};
 	}
 
 	public bool getFacingRight (){
 		return facingRight;
+	}
+	public Vector2 getMousePos (){
+		return mousePos;
 	}
 	public void Flip () {
 		// Switch the way the player is labelled as facing.
@@ -94,58 +102,157 @@ public class CharacterScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Read the input in Update so button presses aren't missed.
-		cam.transform.position = new Vector3(this.transform.position.x,this.transform.position.y,cam.transform.position.z);
+		//cam.transform.position = new Vector3(this.transform.position.x,this.transform.position.y,cam.transform.position.z);
+		mousePos = cam.ScreenToWorldPoint (Input.mousePosition);
+
 		if (Input.GetKeyDown ("t")) {//reset pos
 			transform.position = new Vector3 (0, 5, 0);
 		}
 		if (Input.GetKeyDown ("r")) { //kill instantly
-			
-			for (int i = 0; i < BodyArr.Length; i++) {
-				BodyArr [i].transform.GetComponent<Rigidbody2D> ().bodyType = RigidbodyType2D.Dynamic;
-			}
-			TorsoAnimator.enabled = false;
-			NeckAnimator.enabled = false;
-			ArmFAnimator.enabled = false;
-			ArmBAnimator.enabled = false;
-			HipAnimator.enabled = false;
-			coll1.enabled = false;
-			coll2.enabled = false;
-
-			Head.transform.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (-10000,0));
-			PMovementScript.enabled = false;
-			this.enabled = false;
-
+			Kill();
 		}
-
+		GetHoveredObject();
+		//finds if mouse is over object to equip
+		if (Input.GetMouseButtonDown(0)){ // if left button pressed...
+			if (selectedObject != null){
+				if (selectedObject.tag == "Item"){
+					EquipObject(selectedObject);
+				}
+			}
+		}
+		if (Input.GetMouseButtonDown(1)){ // if right button held
+			if (equippedObject != null){
+				itemHandlerScript.Charge(1);
+			}
+		}
+		if (Input.GetMouseButton(1)){ // if right button held
+			if (equippedObject != null){
+				itemHandlerScript.Charge(2);
+			}
+		}
+		if (Input.GetMouseButtonUp(1)){ // if right button held
+			if (equippedObject != null){
+				itemHandlerScript.Charge(3);
+			}
+		}
 	}
+	public GameObject GetEquippedObject (){
+		return equippedObject;
+	}
+	public void EquipObject (GameObject item){
+		item.transform.GetComponent <Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+		if (item.transform.GetComponent<PolygonCollider2D>() != null){
+			item.transform.GetComponent <PolygonCollider2D>().isTrigger = true;
+		}
+		else if (item.transform.GetComponent<BoxCollider2D>() != null){
+			item.transform.GetComponent <BoxCollider2D>().isTrigger = true;
+		}
+		else if (item.transform.GetComponent<CircleCollider2D>() != null){
+			item.transform.GetComponent <CircleCollider2D>().isTrigger = true;
+		}
+		else if (item.transform.GetComponent<CapsuleCollider2D>() != null){
+			item.transform.GetComponent <CapsuleCollider2D>().isTrigger = true;
+		}
+		item.transform.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+		item.transform.GetComponent<Rigidbody2D>().angularVelocity = 0;
+		item.transform.SetParent(bodyArr[6].transform);
+		item.transform.localPosition = Vector3.zero;
+		equippedObject = item;
+	}
+	public void UnequipObject (GameObject item) {
+		item.transform.GetComponent <Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+		item.transform.parent = null;
+		if (item.transform.GetComponent<PolygonCollider2D>() != null){
+			item.transform.GetComponent <PolygonCollider2D>().isTrigger = false;
+		}
+		else if (item.transform.GetComponent<BoxCollider2D>() != null){
+			item.transform.GetComponent <BoxCollider2D>().isTrigger = false;
+		}
+		else if (item.transform.GetComponent<CircleCollider2D>() != null){
+			item.transform.GetComponent <CircleCollider2D>().isTrigger = false;
+		}
+		else if (item.transform.GetComponent<CapsuleCollider2D>() != null){
+			item.transform.GetComponent <CapsuleCollider2D>().isTrigger = false;
+		}
+		equippedObject = null;
+	}
+
+	private void GetHoveredObject() {
+		
+		//returns objects under the mouse
+		Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+		RaycastHit2D  hit;
+		hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+		if (hit){
+			//Debug.Log(hit.transform.name);
+			selectedObject = hit.transform.gameObject;
+		}
+		else {
+			selectedObject = null;
+		}
+	}
+	private GameObject GetClosestObject(string tag, Vector2 pos) {
+		//method that returns the closest gameobject to a position
+
+		GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag (tag);
+		GameObject closestObject = objectsWithTag[0];
+		for (int i= 0; i < objectsWithTag.Length; i ++)
+		{
+			//compares distances and switches for the shortest distance
+			if(Vector2.Distance(pos, objectsWithTag[i].transform.position) <= Vector2.Distance(pos, closestObject.transform.position))
+			{
+				closestObject = objectsWithTag[i];
+			}
+		}
+		return closestObject;
+	}
+	private void Kill (){
+		for (int i = 0; i < bodyArr.Length; i++) {
+			bodyArr [i].transform.GetComponent<Rigidbody2D> ().bodyType = RigidbodyType2D.Dynamic;
+			bodyArr [i].transform.GetComponent<Rigidbody2D> ().simulated = true;
+			bodyArr [i].transform.GetComponent<BoxCollider2D> ().isTrigger = false;
+		}
+		torsoAnimator.enabled = false;
+		neckAnimator.enabled = false;
+		armFAnimator.enabled = false;
+		armBAnimator.enabled = false;
+		hipAnimator.enabled = false;
+		coll1.enabled = false;
+		coll2.enabled = false;
+
+		head.transform.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (-10000,0));
+		physicalMovementScript.enabled = false;
+		this.enabled = false;
+	}
+
 	public void SetRunning (float f){
-		TorsoAnimator.SetFloat ("Walking", f);
+		torsoAnimator.SetFloat ("Walking", f);
 	}
 	public void SetAnimatorBools (string Animators, string Parameter, bool b){
 		if (Animators == "all") {
-			TorsoAnimator.SetBool (Parameter, b);
-			NeckAnimator.SetBool (Parameter, b);
-			ArmFAnimator.SetBool (Parameter, b);
-			ArmBAnimator.SetBool (Parameter, b);
-			HipAnimator.SetBool (Parameter, b);
+			torsoAnimator.SetBool (Parameter, b);
+			neckAnimator.SetBool (Parameter, b);
+			armFAnimator.SetBool (Parameter, b);
+			armBAnimator.SetBool (Parameter, b);
+			hipAnimator.SetBool (Parameter, b);
 		}
 	}
 	public void SetAnimatorInts (string Animators, string Parameter, int i){
 		if (Animators == "all") {
-			TorsoAnimator.SetInteger (Parameter, i);
-			NeckAnimator.SetInteger (Parameter, i);
-			ArmFAnimator.SetInteger (Parameter, i);
-			ArmBAnimator.SetInteger (Parameter, i);
-			HipAnimator.SetInteger (Parameter, i);
+			torsoAnimator.SetInteger (Parameter, i);
+			neckAnimator.SetInteger (Parameter, i);
+			armFAnimator.SetInteger (Parameter, i);
+			armBAnimator.SetInteger (Parameter, i);
+			hipAnimator.SetInteger (Parameter, i);
 		}
 	}
 	public void SetAnimatorFloats (string Animators, string Parameter, float f){
 		if (Animators == "all") {
-			TorsoAnimator.SetFloat (Parameter, f);
-			NeckAnimator.SetFloat (Parameter, f);
-			ArmFAnimator.SetFloat (Parameter, f);
-			ArmBAnimator.SetFloat (Parameter, f);
-			HipAnimator.SetFloat (Parameter, f);
+			torsoAnimator.SetFloat (Parameter, f);
+			neckAnimator.SetFloat (Parameter, f);
+			armFAnimator.SetFloat (Parameter, f);
+			armBAnimator.SetFloat (Parameter, f);
+			hipAnimator.SetFloat (Parameter, f);
 		} else if (Animators == "torso") {
 
 		}
