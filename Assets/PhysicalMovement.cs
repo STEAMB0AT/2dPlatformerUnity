@@ -12,15 +12,15 @@ public class PhysicalMovement : MonoBehaviour {
 	Trigger2DScript ceilingCheck;
 
 	Rigidbody2D rbody;
-	float moveForce = 750f;
-	float jumpForce = 30f;
-	float jumpTime = 20; //the number of cycles every jump lasts
+	float moveForce = 7500f;
+	float jumpForce = 300f;
+	float jumpTime = 200; //the number of cycles every jump lasts
 	int jumpDelayCount; //the timer used for the current jump
 
 	float currentMaxSpeed;
-	float maxWalkSpeed = 15f;	
-	float maxRunSpeed = 16f;	
-	float maxCrouchSpeed= 6f;
+	float maxWalkSpeed = 150f;	
+	float maxRunSpeed = 160f;	
+	float maxCrouchSpeed= 60f;
 
 	public bool grounded;
 	bool idle;
