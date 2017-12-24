@@ -102,9 +102,8 @@ public class CharacterScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Read the input in Update so button presses aren't missed.
-		//cam.transform.position = new Vector3(this.transform.position.x,this.transform.position.y,cam.transform.position.z);
+		cam.transform.position = new Vector3(this.transform.position.x,this.transform.position.y,cam.transform.position.z);
 		mousePos = cam.ScreenToWorldPoint (Input.mousePosition);
-
 		if (Input.GetKeyDown ("t")) {//reset pos
 			transform.position = new Vector3 (0, 5, 0);
 		}

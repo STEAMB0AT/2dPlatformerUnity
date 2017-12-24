@@ -6,7 +6,8 @@ public class Trigger2DScript : MonoBehaviour {
 
 	bool isTriggered;
 	void OnTriggerEnter2D(Collider2D col) {
-		if (col.transform.tag == "Ground") {
+		Collider2D coll = col.GetComponent<Collider2D>();
+		if (coll != null && coll.isTrigger == false) {
 			isTriggered = true;
 		}
 	}
@@ -14,7 +15,8 @@ public class Trigger2DScript : MonoBehaviour {
 		isTriggered= false;
 	}
 	void OnTriggerStay2D(Collider2D col) {
-		if (col.transform.tag == "Ground") {
+		Collider2D coll = col.GetComponent<Collider2D>();
+		if (coll != null && coll.isTrigger == false) {
 			isTriggered = true;
 		}
 	}

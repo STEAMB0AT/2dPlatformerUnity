@@ -1205,7 +1205,7 @@ GameObject:
   - component: {fileID: 330396828}
   - component: {fileID: 330396827}
   m_Layer: 0
-  m_Name: POST (1)
+  m_Name: T POST
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
