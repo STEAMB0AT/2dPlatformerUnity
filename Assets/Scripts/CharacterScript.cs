@@ -48,9 +48,6 @@ public class CharacterScript : MonoBehaviour {
 	public Camera cam;
 	public bool facingRight = true;	
 
-	Animation torsoAnim;
-	public Animation torsoIdle;
-	public Animation torsoWalking;
 	// Use this for initialization
 
 
@@ -77,7 +74,6 @@ public class CharacterScript : MonoBehaviour {
 		legLowerB = legUpperB.transform.Find("LegLowerB").gameObject;
 		footB = legLowerB.transform.Find("FootB").gameObject;
 
-		torsoAnim = torso.GetComponent <Animation>();
 
 		bodyArr = new GameObject[]{
 			torso, head, neck, hip, armUpperF, armLowerF, handF, armUpperB, armLowerB, handB, legUpperF, legLowerF, footF, legUpperB, legLowerB, footB
@@ -114,9 +110,7 @@ public class CharacterScript : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Space )) {//attempt jump
-			torsoAnim.clip = torsoWalking.clip;
-		}
+	
 		ChangeHeight();
 		// Read the input in Update so button presses aren't missed.
 		mousePos = cam.ScreenToWorldPoint (Input.mousePosition);
