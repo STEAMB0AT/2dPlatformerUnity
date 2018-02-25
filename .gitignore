@@ -32,3 +32,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/Scripts/CharacterScript.cs
+Assets/Scripts/CharacterScript.cs
+*.cs
