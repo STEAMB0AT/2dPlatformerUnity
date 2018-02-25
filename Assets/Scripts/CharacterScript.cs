@@ -49,7 +49,8 @@ public class CharacterScript : MonoBehaviour {
 	public bool facingRight = true;	
 
 	Animation torsoAnim;
-
+	public Animation torsoIdle;
+	public Animation torsoWalking;
 	// Use this for initialization
 
 
@@ -114,6 +115,7 @@ public class CharacterScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Space )) {//attempt jump
+			torsoAnim.clip = torsoWalking.clip;
 		}
 		ChangeHeight();
 		// Read the input in Update so button presses aren't missed.
